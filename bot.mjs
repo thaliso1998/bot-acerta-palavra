@@ -57,13 +57,17 @@ async function handleUpdate(update) {
 async function startBot() {
   let offset = 0;
   while (true) {
-    const res = await fetch(`${API}/getUpdates?timeout=30&offset=${offset}`);
-    const data = await res.json();
-    for (const update of data.result) {
-      offset = update.update_id + 1;
-      await handleUpdate(update);
+    try {
+      const res = await fetch(`${API}/getUpdates?timeout=30&offset=${offset}`);
+      const data = await res.json();
+      if (!data.ok || !Array.isArray(data.result)) continue;
+      for (const update of data.result) {
+        offset = update.update_id + 1;
+        await handleUpdate(update);
+      }
+    } catch (e) {
+      console.error("Erro:", e.message);
+      await new Promise(r => setTimeout(r, 3000));
     }
   }
 }
-
-startBot();
