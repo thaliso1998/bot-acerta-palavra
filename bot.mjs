@@ -1,38 +1,29 @@
+import http from "http";
+
 const TOKEN = "8690262996:AAEUjP1OZ9ZXCcx0BQcpo28loEyqY0bn7Pk";
 const API = `https://api.telegram.org/bot${TOKEN}`;
+
+// Servidor HTTP mínimo pra o Render não matar o processo
+http.createServer((req, res) => res.end("ok")).listen(process.env.PORT || 3000);
 
 async function sendMessage(chatId, text, replyMarkup = null) {
   await fetch(`${API}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text,
-      reply_markup: replyMarkup,
-      parse_mode: "HTML"
-    })
+    body: JSON.stringify({ chat_id: chatId, text, reply_markup: replyMarkup, parse_mode: "HTML" })
   });
 }
 
 function mainKeyboard() {
   return {
-    keyboard: [
-      ["🎯 Jogar Agora"],
-      ["🔥 Desafio Relâmpago", "❓ Como funciona"],
-      ["📞 Suporte"]
-    ],
+    keyboard: [["🎯 Jogar Agora"], ["🔥 Desafio Relâmpago", "❓ Como funciona"], ["📞 Suporte"]],
     resize_keyboard: true
   };
 }
 
 function miniAppButton() {
   return {
-    inline_keyboard: [[
-      {
-        text: "🎮 JOGAR AGORA",
-        web_app: { url: "https://acertapalavra.com/" }
-      }
-    ]]
+    inline_keyboard: [[{ text: "🎮 JOGAR AGORA", web_app: { url: "https://acertapalavra.com/" } }]]
   };
 }
 
@@ -71,3 +62,5 @@ async function startBot() {
     }
   }
 }
+
+startBot();
