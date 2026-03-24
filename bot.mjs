@@ -1,6 +1,6 @@
 import http from "http";
 
-const TOKEN = "8690262996:AAEUjP1OZ9ZXCcx0BQcpo28loEyqY0bn7Pk";
+const TOKEN = "8418247879:AAHL7bHRMNty0sjW4bpOY0qFbhjZ0jLur7A";
 const API = `https://api.telegram.org/bot${TOKEN}`;
 
 http.createServer((req, res) => res.end("ok")).listen(process.env.PORT || 3000);
